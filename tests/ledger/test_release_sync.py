@@ -36,10 +36,8 @@ def test_published_versions_agree() -> None:
     assert kimi_version == project["project"]["version"]
 
 
-def test_skill_command_map_covers_implemented_commands() -> None:
-    skill = (PLUGIN / "skills" / "using-aitp" / "SKILL.md").read_text(
-        encoding="utf-8"
-    )
+def test_skill_command_map_covers_implemented_commands(using_aitp_guidance: str) -> None:
+    skill = using_aitp_guidance
     assert "check remains absent" not in skill
     for command in (
         "init",

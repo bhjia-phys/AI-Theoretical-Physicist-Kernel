@@ -2,6 +2,34 @@
 
 AITP is a local-first protocol for long-running collaboration between researchers and AI agents.
 
+Provisional planning Notes may cite an attributed, unverified proposal rather
+than results. The writing Skill now distinguishes source provenance from
+scientific evidence and reviews affected prose when refs change; recall should
+report explicit metadata/body contradictions. No schema or runtime gate is added.
+
+Active finite integration work (2026-09-10): the user authorized the minimal
+[atomic scoped Note-save extension](docs/hakimi-note-atomic-save-spec.md) and
+Hakimi ownership simplification. Source 0.10.0 / adapter-contract-0.3 implements
+paired `note save --expected-topic ... --exact-workstream ...`, locked validation
+and same-draft retry. Legacy no-flag saves remain supported; no file/read schema
+change. Daily Hakimi core and AITP 0.10.0 are now installed together: a new
+synthetic session reports ready / contract 0.3 / Python 3.12 with no Goal.
+Codex cache is updated to 0.10.0+codex.20260910054835; a new Codex thread is
+needed to pick up Skills. Do not install contract-0.3 into an old adapter.
+Final integration acceptance remains incomplete; no roadmap stage promotion or full Goal completion.
+
+The two installable manifests describe this implemented memory surface, not the
+graph/Insight roadmap. Entry/Note atomic failure and retry tests pass; the latest
+ledger suite has 220 passing tests. This is deterministic evidence, not a claim
+of scientific accuracy or model behavior superiority; installation smoke evidence is separate.
+
+Theory/numerics memory guidance (2026-09-10, locally reinstalled): `using-aitp` now
+illustrates recording changes of understanding without report/Entry/Note/card
+duplication, preserving valid calculations when interpretations narrow, and
+recovering route reasons without inventing them. See [scope and validation](docs/research-memory.zh-CN.md#theory-history-refinement).
+No runtime, CLI, schema or scientific-judgment gate change. Codex and Hakimi
+copies match all 65 source bundle files; new-session behavior is not yet retested.
+
 Its goal is not merely to save notes. A mature AITP collaborator should remember the details that matter, recover why decisions were made, preserve failed attempts, connect knowledge across Topics, extract reusable physical knowledge and technical Skills, and surface new Insights without confusing them with established results.
 
 ## North star
@@ -19,6 +47,154 @@ After weeks or years of work, a new session should be able to:
   commitments, or the reasoning behind the current direction.
 
 AITP records project memory, not scientific truth. Evidence and human judgment remain authoritative.
+
+Recording does not require a host Research Action or checkpoint. The existing
+paired `record save --expected-topic … --exact-workstream …` preconditions work
+for direct scoped records as well as host checkpoint records; this does not add
+atomic scope flags to `note save`. No durable change means no new record.
+
+Read guidance (2026-09-10): ordinary follow-up questions are not new session
+boundaries. Reuse fresh matching reports; investigate findings affecting the
+evidence relied on, without treating unrelated findings as a global research
+stop. Post-save verification and exit-2 uncertainty remain unchanged.
+
+Current-state recall also checks relevant later records in an explicitly known
+workstream before treating an old gap as still open. Keep implementation,
+synthetic tests, real runs and physical validation distinct; unknown coverage
+requires an as-of-record qualification, not an unsupported absence claim.
+
+## Research memory: what belongs where
+
+Distillation loading refinement (2026-09-09, source only; not reinstalled):
+Ordinary recall also avoids standalone per-file hash audits. Required new pins
+may reuse verified digests for the same unchanged target; file existence never
+replaces save/check validation or historical-version verification.
+ordinary read-only recall does not load the full distillation Skill merely
+because historical observation markers exist. Current-task/touched-evidence
+relevance comes first; explicit review requests, relevant recurring execution,
+and new card trial/revision evidence retain the full review rules. Card drafting,
+trial pins and both human decisions are unchanged. No runtime/CLI/schema change
+or measured speedup; see the [natural-use observation](feedback/2026-09-09-distillation-loading-natural-use.md).
+
+Check-call deduplication (2026-09-09, locally reinstalled in Codex and Hakimi): discover
+and verify Python 3.11+ before running AITP. Reuse start/post-save enter/check
+at pre-write or closeout only during a known-unchanged interval; uncertain
+freshness, concurrent writers or ledger/policy/evidence changes require refresh.
+Multi-line read-only recovery uses one global check with scoped enter reads;
+it does not relabel global findings as scoped. Every save still requires
+post-save check/enter. M1d global scanning, CLI/runtime/schema and permissions
+are unchanged; this reduces requested scans, not the cost of each individual
+check, and is Skill guidance rather than automatic scheduling.
+Validation: 193 ledger tests pass (44.74 s), including a new two-line read-only
+journey and evidence-change stale-report counterexample; Skill validation and
+both handoff diff checks pass. Initial contract-link and Python-version wording
+assertions failed, then were corrected without weakening those tests.
+A single sequential local GW comparison measured 3 scoped checks + 3 enters
+at 5.440 s versus 1 global check + 3 enters at 2.965 s; all three enter views
+were equal. This is a call-pattern measurement, not a controlled model-speed
+benchmark. No real scientific records or system Python were changed.
+Installation verified at 2026-09-08 19:08 UTC: all 65 bundle files match on both
+hosts; Hakimi reports enabled/ok with no diagnostics after an all-idle check.
+Codex cache version is `0.9.0+codex.20260908190759`; start a new Codex thread to
+pick up its updated Skills. Base protocol version remains 0.9.0.
+
+Five-topic bounded memory acceptance completed (2026-09-09). Five fresh mode-off
+sessions passed all 30 frozen recall questions; Si postorganization retest passed
+7/7 (six repeated questions plus exact-version recovery). Earlier provider522
+attempts are unscored; no months-long retention or speedup guarantee is claimed.
+Si now has an append-only
+recovery observation and revised working Note: old exporter bytes match the
+original pin, while the original live-path finding and scientific failures stay
+unchanged. The memory reference now distinguishes record discovery, exact-version
+retrieval and scientific validation, including the nested-Git boundary. This
+guidance/description-only update is installed and independently cold-retested. The
+installation request timed out initially; without resubmission, a later check
+at17:57UTC Sep8 verified all65files matching and plugin enabled/ok. Ledger192passed
+and Skill validation passed.
+No new CLI, schema, index, backup service or scientific result is implied.
+See the [five-topic acceptance report (中文)](docs/five-topic-memory-acceptance.zh-CN.md)
+for the frozen scope, current record entrances, measured costs and remaining work.
+
+Read/write efficiency follow-up (locally installed, 2026-09-09 Asia/Shanghai):
+the using-aitp entrypoint is reduced from 684 to 182 lines. Routine
+scope/recovery/save boundaries stay in the entrypoint; recording mechanics and
+full transport/legacy-operation details move to linked on-demand references.
+Independent reads may share a host-supported batch; dependent writes remain
+ordered. Complete check reports and exit codes stay available while unrelated
+findings need not be reinjected into every model request. No CLI/schema/runtime
+or Research Mode visibility change. Ledger tests: 191 passed; installed bundle:
+65 matching files. Two fresh read tests used fewer model requests, but one
+required a targeted correction about a paused Goal; total time did not improve
+in both cases because approval waits differed. Isolated public Entry/Note save,
+retry and scoped queries passed with no duplicate or cross-scope records.
+See the guide below for timings and limits; this is not a causal speedup or
+unassisted full-recall claim. Real research stores were not changed.
+
+Start with the [research-memory reading/writing guide (中文)](docs/research-memory.zh-CN.md)
+for diagrams and Si/GW, Heisenberg, and domain-wall examples. The installable
+[using-aitp reference](plugins/aitp-research-protocol/skills/using-aitp/references/research-memory.md)
+guides scoped recovery, low-noise event recording, and evolving synthesis.
+
+`TOPIC.md` is a human-readable research map, not a second ledger: keep stable
+direction boundaries and reading locations there, and recover current progress
+from explicitly scoped records. Long derivations stay in pinned research files;
+Notes explain their key steps, assumptions and exact reading locations. The
+current CLI has no Topic-update or Note-show command. Ordinary Topic edits need
+explicit authority when canonical-file writes are restricted. This map/writing
+follow-up has been locally installed (63 files verified). Bounded mode-off
+tests recovered historical conclusions and a derivation; a maintenance choice
+correctly avoided a duplicate Note. GW navigation was updated with explicit
+user authorization, preserving the original identity/Goal and all other records.
+Automatic Skill discovery is still unavailable in Hakimi mode-off; these tests
+used the public file/CLI entry point and do not prove full recall or a speedup.
+
+```mermaid
+flowchart LR
+    T["Topic + explicit workstreams"] --> E["Entry: event, evidence, limits"]
+    T --> N["Working/Theory Note: understanding and argument"]
+    N -->|basis_refs| E
+    E -->|refs| F["Research files and sources"]
+    N -->|basis_refs| F
+    P["Prior Note, preserved"] -. "superseded by" .-> N
+```
+
+Ownership, evidential support, and revision are different relationships. Read
+the relevant synthesis **and** uncovered evidence; a closeout-first handoff is
+not an execution instruction. Unchanged queries write nothing. Record durable
+events once; write Notes for useful synthesis, not as a mandatory second record.
+Method review still follows only `distilling-methods`.
+
+Cold-recall follow-up (2026-09-08, locally reinstalled/reloaded): the
+reference now distinguishes an active resolver from a superseded historical
+repair and avoids repeated reads/checks merely for different renderings. Two
+additional synthetic CLI cases preserve active-only closure across same-line
+and cross-line replacements. Five fresh mode-off retests completed; a separate
+fresh targeted test correctly distinguished an inactive historical resolver
+from an active successor with no closure edge. Timing is mixed, not a general
+speedup claim; detailed limits are in the research-memory guide §9.
+Draft guidance also avoids ad hoc validators and temporary save-wait instructions
+in durable Notes; the existing public save remains the authoritative validator.
+NiO, Bi2Se3 and Si now have new same-scope Working Notes saved by fresh mode-off
+Hakimi test sessions through the public CLI; all 971 old canonical files remain
+unchanged and post-save findings did not increase. All 189 ledger tests pass.
+Reload followed a 203-session idle check; 63 installed bundle files match source.
+The first Si retest omitted a current configuration limitation, so its synthesis
+was repaired. Another independent Si retest recovered that limitation and the
+new dataset/status boundaries (188 non-approval seconds versus baseline233;
+24 tools versus26). Partial first-pass recall remains reported, not erased.
+
+The 2026-09-08 working-tree slice changes bundled guidance, Note template prompts,
+and model-facing descriptions, not runtime logic, CLI flags, file/read schemas,
+or roadmap stages. It does not implement a Board, automatic scientific judgment,
+or atomic scoped Note save. A reviewed local reinstall/reload delivered the guide
+to the original Si Hakimi session; scoped recovery and one append-only Working
+Note save were exercised. The first synthesis still needs more precise Entry
+citations; its queued correction was not executed after relay failures stopped
+the supervised run. Two recovered tool rejections also remain open. See
+[delivery findings](docs/research-memory.zh-CN.md#8-本地交付与真实会话复核2026-09-08).
+All 187 ledger tests pass, including the three synthetic memory journeys and
+the bundled-guide reachability check; Skill validation and diff checks pass.
+These checks do not establish autonomous conformance or a research-efficiency gain.
 
 ## Architecture
 
@@ -59,6 +235,23 @@ as software. See [Roadmap and Product Design](docs/roadmap.md).
 The normative plan, including complexity budgets and gate definitions, is
 [docs/roadmap.md](docs/roadmap.md). This README keeps the public implementation
 checkpoint synchronized with it.
+
+Current integration release **0.9.0** is a reviewed Hakimi S5.1 slice, not a
+roadmap stage: `record save` optionally accepts the paired
+`--expected-topic <slug> --exact-workstream <slug>` preconditions and compares
+the current Topic plus exact singleton Entry membership under the write lock
+before canonical persistence. It changes no Entry/Note or read transport
+schema and authorizes no M2/M3/M4 or Hakimi S6 work. Frozen contract:
+[`docs/archive/hakimi-s5-1-atomic-record-save-spec.md`](docs/archive/hakimi-s5-1-atomic-record-save-spec.md).
+The deterministic gate passed with 181 AITP tests and the cross-repository
+Hakimi checks recorded in
+[`docs/hakimi-s5-1-stage-notes.md`](docs/hakimi-s5-1-stage-notes.md); this is
+implementation evidence, not scientific validation.
+
+A tests-only isolation follow-up (2026-09-07) passes 183 ledger tests,
+including interleaved CLI clients, pending drafts, similar workstream names,
+exact-scope retries and scoped handoffs. The original 181-test gate stays frozen;
+no runtime or contract change. See [integration handoff](docs/hakimi/README.md).
 
 | Stage | Status | Outcome | Exit gate |
 |---|---|---|---|
@@ -413,13 +606,25 @@ schema, transport schema, exit code, or runtime line; version strings
 synchronized to 0.8.0; runtime stays 1,793 nonblank lines. See
 [`docs/method-cards-and-distillation.md`](docs/method-cards-and-distillation.md).
 
+The 2026-09-01 **0.9.0** Hakimi S5.1 integration release adds only the
+optional atomic compare-and-save variant for Entry drafts. Both
+`--expected-topic` and `--exact-workstream` must be supplied together; a
+Topic or exact singleton-membership mismatch exits 2 without a canonical
+write. The no-flag save and its exact success envelope are unchanged. The
+machine adapter surface is `aitp/adapter-contract-0.2`; file/read transport
+schemas and method-card/human-decision semantics are unchanged. The gate
+evidence is in
+[`docs/hakimi-s5-1-stage-notes.md`](docs/hakimi-s5-1-stage-notes.md): 181 AITP
+tests passed, runtime is 1,817 nonblank lines, and the largest module is 396
+nonblank lines.
+
 Implemented command groups (the complete current CLI surface):
 
 ```text
 aitp init [--adopt]
 aitp enter [--workstream <slug>]          # M1c: scoped enter-0.3 with flag
 aitp inventory <path> --name <name>
-aitp record prepare ... [--workstream <slug>]... -> aitp record save <draft>   # M1c: repeatable prepare flag
+aitp record prepare ... [--workstream <slug>]... -> aitp record save <draft> [--expected-topic <slug> --exact-workstream <slug>]
 aitp note prepare ... [--workstream <slug>]... -> aitp note save <draft>       # M1c: repeatable prepare flag
 aitp list [--workstream <slug>]           # M1c: scoped list-0.2 with flag
 aitp show <entry-id>
@@ -503,6 +708,10 @@ exit code and fail closed (the `using-aitp` Skill shows the pattern).
 The Hakimi integration handoff baseline (compatibility matrix, versioned
 envelope decisions, red lines, phased H0/H1/H2 plan) lives in
 [`docs/hakimi/`](docs/hakimi/README.md).
+The 2026-09-07 Hakimi checkpoint-response clarification is locally installed:
+it identifies existing native verification without changing AITP checks, Skills,
+schemas or scientific authority. Local delivery and cold-scope checks pass;
+model non-repetition is unproven. See the handoff for evidence and limitations.
 
 ### Cross-harness adapter sync (Hakimi + DeepSeek Harness)
 
@@ -649,3 +858,10 @@ python3.12 -m venv .venv
 - not a reason to record every conversational detail.
 
 AITP succeeds when it helps humans and agents think together over time while making it easier—not harder—to inspect why they believe something.
+# Read-routing follow-up (source only, 2026-09-09)
+
+Hakimi plugin instructions now prefer available native AITP read tools over
+duplicate CLI calls. CLI fallback resolves from the loaded Skill directory,
+not the workspace/repository root; a denial never authorizes a Bash bypass.
+No runtime, schema, approval or write-validation change. Reinstallation and
+new-session behavior verification are pending.

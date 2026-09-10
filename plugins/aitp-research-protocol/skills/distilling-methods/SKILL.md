@@ -356,6 +356,12 @@ judgment of eligibility), and at session end (review new observations, new
 cards, and new trials). A proposal may be re-raised after an
 interrupted/recovered session; no exactly-once claim is made.
 
+Marker discovery alone does not require harvesting. Ordinary read-only recall
+leaves unrelated historical candidates alone; apply the calling Skill's relevance
+check before loading this review. Explicit card/review requests, relevant recurring
+execution evidence, and new card trial/revision evidence still route here; none
+waives the evidence, trial, approval, or publication rules above.
+
 A native host (Hakimi future Feature, planned but not implemented) would
 own session/turn checkpoint, deduplication, recovery, question interaction,
 and adapter state — but still cannot guarantee procedure-semantic judgment,

@@ -1,6 +1,6 @@
 {
   "name": "aitp-research-protocol",
-  "version": "0.8.0+codex.20260821075852",
+  "version": "0.10.0+codex.20260910054835",
   "description": "Local-first, evidence-grounded research protocol for theoretical physics",
   "author": {
     "name": "Bohan Jia",
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "AITP Research Protocol",
     "shortDescription": "Grounded research continuity for theoretical physics.",
-    "longDescription": "Initialize a research workspace, recover source-linked project state, record durable results and failures, and evolve them into graph, knowledge, Skill, Insight, and collaborator layers. Since 0.6.0: maintain current state automatically at session boundaries (enter/check, evidence review, closeout/working-note upkeep, zero writes when nothing durable changed) distill stable repeated methods into local method cards with a human-gated publication path, and since 0.7.0 use evidence-lifecycle pins (sha256-once/check-policy) plus reviewed workstream backfill. Since 0.8.0: observe eligible durable Entries with low-trust method-observation markers, route through conservative candidate review and two-step human decisions (card approval then publication choice), and define the platform tool/card/Skill three-layer boundary — all Skill-only with no runtime, CLI, or schema change.",
+    "longDescription": "Recover source-linked research memory, record durable results and failures, and write working or theory Notes with explicit workstream scope. Skills guide selective maintenance with zero writes when nothing durable changed, and distill stable repeated procedures into local method cards; publication requires explicit human decisions. Evidence-lifecycle pins and reviewed workstream backfill preserve historical context. Version 0.10.0 supports optional atomic Topic/exact-workstream preconditions for both Entry and Note saves. Research judgment and execution orchestration remain with the researcher and host agent; no graph service, MCP server, hook, or background daemon is required.",
     "developerName": "bhjia-phys",
     "category": "Productivity",
     "capabilities": [

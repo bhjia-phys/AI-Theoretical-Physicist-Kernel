@@ -1,8 +1,8 @@
 {
-  "schema": "aitp/adapter-contract-0.1",
+  "schema": "aitp/adapter-contract-0.3",
   "plugin": {
     "name": "aitp-research-protocol",
-    "version": "0.8.0"
+    "version": "0.10.0"
   },
   "python": {
     "min_minor": 11,
@@ -12,7 +12,7 @@
   "commands": {
     "enter": {
       "tool": "aitp_enter",
-      "description": "Enter this AITP research workspace and return its grounded recorded state projection: recent entries, unresolved failures, next action, recent notes, counts, and warnings. Use at the start of a research session and before ending one, and before relying on any recorded project state.",
+      "description": "Return recorded state with explicit workstream scope. Use a small positive recent window for orientation, not proof of absence; read exact latest_working_note.source and relevant evidence. next_action is closeout-first recorded history, not execution authority. For synthesis, Topic maps and historical-version recovery consult using-aitp/references/research-memory.md; finding a record or its old bytes does not validate its science. Detailed transports are in using-aitp/references/cli-contracts.md. Reuse fresh reports; preserve session/save verification. Ordinary follow-up questions are not new session boundaries; do not repeat enter automatically at every turn end. For current gaps, follow keyword hits with relevant later records in their explicit workstream; without later coverage, qualify the answer as of the record rather than asserting a gap still exists.",
       "argv": [
         "enter"
       ],
@@ -94,7 +94,7 @@
     },
     "show": {
       "tool": "aitp_show",
-      "description": "Open one exact AITP ledger entry by ID and return its complete frontmatter and body.",
+      "description": "Open one exact AITP ledger entry by ID and return its complete frontmatter and body. When native AITP read tools are available, prefer them over duplicate CLI calls; the Hakimi plugin Skill instructions own native-versus-CLI routing and exact launcher resolution.",
       "argv": [
         "show"
       ],
@@ -119,7 +119,7 @@
     },
     "check": {
       "tool": "aitp_check",
-      "description": "Validate the whole AITP store read-only and report findings. Exit code 1 means findings were reported (warnings or errors), NOT a failed tool call; read the JSON payload and investigate errors before continuing.",
+      "description": "Validate the whole store read-only: exit 0 clean, 1 findings, 2 cannot run. Scoped output still scans globally. For multi-line read-only recovery, use one global check with scoped enter reads; never relabel the global report as scoped. Reuse a complete matching report only over a known-unchanged work interval; ledger, policy, evidence changes or uncertain freshness require refresh. Always check after save. Empty scoped clean does not certify the whole store. Findings affecting evidence relied on require investigation; unrelated findings do not block independent research. Exit 2 does not establish verified memory. Details: using-aitp/SKILL.md and using-aitp/references/cli-contracts.md.",
       "argv": [
         "check"
       ],
@@ -255,7 +255,7 @@
     },
     "record save": {
       "tool": "aitp_record_save",
-      "description": "Validate and save a prepared AITP Entry draft into the canonical ledger. The draft must already be filled in.",
+      "description": "Validate and save a filled Entry draft into the canonical ledger. AITP does not require a Research Action or checkpoint. For scoped compare-and-save, including direct records and checkpoint-bound records, pass both expected_topic and exact_workstream so the current Topic and exact singleton membership are compared under the write lock before canonical save. No durable change requires no new record.",
       "argv": [
         "record",
         "save"
@@ -268,17 +268,33 @@
           "nonempty": true,
           "description": "Draft path returned by aitp_record_prepare (for example .aitp/local/drafts/entry-<id>.md).",
           "position": 0
+        },
+        {
+          "name": "expected_topic",
+          "type": "string",
+          "required": false,
+          "description": "Expected current Topic slug. Must be passed together with exact_workstream.",
+          "flag": "--expected-topic",
+          "paired_with": "exact_workstream"
+        },
+        {
+          "name": "exact_workstream",
+          "type": "string",
+          "required": false,
+          "description": "Require the Entry workstreams value to be exactly this singleton slug. Must be passed together with expected_topic.",
+          "flag": "--exact-workstream",
+          "paired_with": "expected_topic"
         }
       ],
       "json_schemas": [],
       "exit_codes": {
-        "0": "saved",
-        "2": "AITPError JSON envelope"
+        "0": "saved or already_saved",
+        "2": "AITPError JSON envelope, including invalid or failed compare-and-save preconditions"
       }
     },
     "note prepare": {
       "tool": "aitp_note_prepare",
-      "description": "Prepare a new AITP Note draft (working or theory). The result is a draft path only: read the draft, fill every section and pinned basis_refs, then call aitp_note_save. Use a working note when several durable entries form a conclusion chain a returning session would reconstruct.",
+      "description": "Prepare a new AITP Note draft (working or theory). The result is a draft path only: read the draft, fill every section and pinned basis_refs, then call aitp_note_save. Use a working Note for a requested or genuinely changed synthesis, not every result or tool call. Retain a detailed argument in a theory Note or one primary ordinary manuscript; do not automatically duplicate report, Entry, Note and card. Interpretation can narrow while the underlying calculation remains valid; explain this in the body. Examples: using-aitp/references/research-memory.md.",
       "argv": [
         "note",
         "prepare"
@@ -331,7 +347,7 @@
     },
     "note save": {
       "tool": "aitp_note_save",
-      "description": "Validate and save a prepared AITP Note draft into the canonical ledger.",
+      "description": "Validate and save a prepared Note. For a captured singleton scope pass both expected_topic and exact_workstream; Topic and exact draft membership are checked under the write lock before validation, write and retries. Read using-aitp/references/recording.md before writing, and using-aitp/references/research-memory.md for synthesis. A provisional plan may cite an attributed unverified proposal; no results does not mean no source refs. After draft repairs keep summary, prose and refs consistent. Preserve scientific limits; verify with check/enter after save; no duplicate result just to announce a Note. Old adapters without contract-0.3 support must not silently fall back to unscoped save.",
       "argv": [
         "note",
         "save"
@@ -344,6 +360,22 @@
           "nonempty": true,
           "description": "Draft path returned by aitp_note_prepare (for example .aitp/local/drafts/note-<id>.md).",
           "position": 0
+        },
+        {
+          "name": "expected_topic",
+          "type": "string",
+          "required": false,
+          "description": "Expected current Topic slug. Must be passed together with exact_workstream.",
+          "flag": "--expected-topic",
+          "paired_with": "exact_workstream"
+        },
+        {
+          "name": "exact_workstream",
+          "type": "string",
+          "required": false,
+          "description": "Require exactly this singleton Note workstream. Must be passed together with expected_topic.",
+          "flag": "--exact-workstream",
+          "paired_with": "expected_topic"
         }
       ],
       "json_schemas": [],
@@ -380,5 +412,5 @@
   "semantic_policy_files": [
     "suite/policy.md"
   ],
-  "sync_rule": "This file is the machine-readable adapter surface. AITP CLI, transport-schema, or Skill-surface changes must update it in the same change; consumers may fail closed when its sha256 or version is unknown."
+  "sync_rule": "This file is the machine-readable adapter surface. AITP CLI, transport-schema, or Skill-surface changes must update it in the same change; consumers may fail closed when its sha256 or version is unknown. Skill routing distinguishes marker discovery from relevant distillation review; historical markers alone do not trigger full review during ordinary read-only recall. Ordinary recall adds no standalone hash audit; required new pins may reuse verified same-target unchanged digests, without weakening save/check validation."
 }

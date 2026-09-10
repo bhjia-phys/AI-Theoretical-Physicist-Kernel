@@ -1,5 +1,13 @@
 # AITP Roadmap and Product Design
 
+2026-09-10 integration-only source update: 0.10.0 / adapter-contract-0.3 adds
+optional atomic Topic/exact-workstream Note save under the existing store lock.
+No stage promotion, new file/read schema, or semantic runtime; legacy saves
+remain supported. Canonical runtime: 1,828 nonblank lines, maximum module 396.
+Hakimi adapter integration, finite acceptance and local installation are complete;
+see `docs/hakimi/README.md` for evidence and the unmeasured behavioral boundaries.
+Contract and evidence: [atomic Note save](hakimi-note-atomic-save-spec.md).
+
 Status: active master plan. Current state: M0.5 gate passed; **M0.6
 implementation closed; original empirical gate not passed** (approved
 narrowed reviewed claim; review packet in `docs/archive/m0.6-gate-review.md`);
@@ -42,6 +50,12 @@ save-strict/check-historical pins, optional `.aitp/local/check-policy.json`
 reviewed mutable-path policy, and dry-run-first `aitp backfill workstreams`
 with a human-decision mapping anchor; version 0.7.0; runtime **1,793**
 nonblank lines (target ≤ 1,800 / cap ≤ 1,850), **154 tests passed**.
+**0.9.0 (2026-09-01, reviewed Hakimi S5.1 integration-driven change; not a
+roadmap stage):** paired `record save --expected-topic ...
+--exact-workstream ...` atomic compare-and-save, adapter contract
+`aitp/adapter-contract-0.2`, unchanged Entry/Note and read transport schemas;
+frozen spec `docs/archive/hakimi-s5-1-atomic-record-save-spec.md`. It flips no
+M2/M3/M4 disposition and does not authorize Hakimi S6 or H6b.
 M2/M3/M4 remain blocked
 design options. Completed specs, adjudications, and stage notes are frozen in
 `docs/archive/` and take no part in any sync discipline. Earlier revisions
@@ -853,6 +867,29 @@ surfaces; canonical runtime stays at 1,793 nonblank lines; the
 `aitp/adapter-contract-0.1` schema, commands, flags, transport schemas,
 and Skill paths are unchanged. No M1b/M1c/M1d/M1e disposition change; no
 M2/M3/M4 flip. Design record: `docs/method-cards-and-distillation.md`.
+
+### 0.9.0 — Hakimi S5.1 atomic scoped save (2026-09-01; not a roadmap stage)
+
+The user-reviewed Hakimi S5.1 integration need selects one narrow runtime
+slice: `record save` accepts the optional paired single-occurrence
+`--expected-topic <slug> --exact-workstream <slug>` flags. With the pair, the
+existing write lock covers the current `STORE.toml` Topic read, exact draft
+byte read, exact singleton-workstream comparison, full validation, retry
+decision, and atomic canonical write. A failed precondition preserves the
+draft and creates no canonical Entry or idempotency side record; the same
+satisfied retry still returns the unchanged `already_saved` envelope. Without
+the pair, legacy save behavior and success shapes remain compatible.
+
+This release changes the adapter manifest to `aitp/adapter-contract-0.2` and
+plugin version to 0.9.0. It adds no file or read transport schema, no Note
+variant, and no semantic inference. It does not change method-card or human
+decision rules, reopen prior stage dispositions, authorize M2/M3/M4/H6b, or
+start Hakimi S6. Frozen implementation contract:
+`docs/archive/hakimi-s5-1-atomic-record-save-spec.md`. The deterministic gate
+passed: 181 AITP tests, 1,817 canonical-runtime nonblank lines, largest module
+396 lines, six byte-identical cross-repository fixtures, and the Hakimi
+adapter/checkpoint/public-surface checks recorded in
+`docs/hakimi-s5-1-stage-notes.md`. This is implementation evidence only.
 
 ### M2 — Reviewed artifacts (design option; ~3–4 weeks; end ≤ 1,700)
 

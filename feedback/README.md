@@ -6,6 +6,10 @@ AITP 优于 plain files 的证据；实现状态和候选处置仍以 `README.md
 
 ## Intake 与逻辑归档
 
+- [2026-09-09 distillation loading](2026-09-09-distillation-loading-natural-use.md):
+  **active** — user-authorized relevance-first Skill routing implemented;
+  live behavioral retest pending, no measured speedup claim.
+
 - 新反馈继续按 [`natural-use-session-template.md`](natural-use-session-template.md)
   写入 `feedback/` 根目录。
 - 未列入本索引的新日期化反馈默认是 **active**，等待 reviewed triage。
@@ -21,6 +25,19 @@ AITP 优于 plain files 的证据；实现状态和候选处置仍以 `README.md
 以下记录仍承载尚未被完成阶段完全吸收、或尚未形成独立 canonical disposition 的
 当前自然使用证据：
 
+- [`2026-09-10-domain-walls-research-history-followup-natural-use.md`](2026-09-10-domain-walls-research-history-followup-natural-use.md)
+  — 同日续篇：保留长期认识演变、失败与原始证据，减少重复叙述；六项优化建议
+  写作指导与正反例已按后续用户授权吸收至 using-aitp（源码），见
+  [修订范围](../docs/research-memory.zh-CN.md#theory-history-refinement)；
+  模型行为、历史完整性及比较验收仍待测，原反馈保留且继续 active。
+- [`2026-09-10-domain-walls-theory-exploration-natural-use.md`](2026-09-10-domain-walls-theory-exploration-natural-use.md)
+  — 理论探索中的多层重述与研究判断边界；含本地证据、agent 用法责任和待评审
+  轻量化建议已按后续用户授权落实 Skill 源码；原观察不改写，仍无因果、
+  提速或相对 plain files 优劣结论，保持 active 等待行为复测。
+- [`2026-09-08-research-memory-read-write-natural-use.md`](2026-09-08-research-memory-read-write-natural-use.md)
+  — 三课题的 scoped 恢复、证据覆盖与综合需求；Skill/模板指导及确定性 CLI
+  验证后，原 Si 会话已实测安装/读写。仍有说明读取门禁、revision 混淆和
+  综合引用不足；relay 中断了补正。自主遵循、效率与大文件校验仍未验收。
 - [`2026-08-13-gw-librpa-m1b-r1-natural-use-feedback.md`](2026-08-13-gw-librpa-m1b-r1-natural-use-feedback.md)
   — `check` 按 target 聚合的人类视图、Topic/host goal 边界及 deferred read/write 候选。
 - [`2026-08-14-gw-librpa-natural-use.md`](2026-08-14-gw-librpa-natural-use.md)

@@ -207,6 +207,8 @@ def build_parser() -> argparse.ArgumentParser:
         "save", help="validate and save a prepared Entry draft"
     )
     record_save.add_argument("draft")
+    record_save.add_argument("--expected-topic", action=_SingleValue, help="require the current Topic to match (use with --exact-workstream)")
+    record_save.add_argument("--exact-workstream", action=_SingleValue, help="require exactly this one Entry workstream (use with --expected-topic)")
 
     note = commands.add_parser("note", help="prepare or save a Note")
     note_commands = note.add_subparsers(dest="note_command", required=True)
@@ -221,6 +223,8 @@ def build_parser() -> argparse.ArgumentParser:
         "save", help="validate and save a prepared Note draft"
     )
     note_save.add_argument("draft")
+    note_save.add_argument("--expected-topic", action=_SingleValue, help="require the current Topic to match (use with --exact-workstream)")
+    note_save.add_argument("--exact-workstream", action=_SingleValue, help="require exactly this one Note workstream (use with --expected-topic)")
     for command_parser in (init, enter, listing, show, check, inventory, record_prepare, record_save, note_prepare, note_save, backfill_workstreams):
         _add_common_options(command_parser)
     return parser
@@ -262,7 +266,12 @@ def main(argv: list[str] | None = None) -> int:
                 workstreams=args.workstream,
             )
         elif args.command == "record" and args.record_command == "save":
-            payload = save_entry(args.cwd, args.draft)
+            payload = save_entry(
+                args.cwd,
+                args.draft,
+                expected_topic=args.expected_topic,
+                exact_workstream=args.exact_workstream,
+            )
         elif args.command == "note" and args.note_command == "prepare":
             payload = prepare_note(
                 args.cwd,
@@ -272,7 +281,7 @@ def main(argv: list[str] | None = None) -> int:
                 workstreams=args.workstream,
             )
         elif args.command == "note" and args.note_command == "save":
-            payload = save_note(args.cwd, args.draft)
+            payload = save_note(args.cwd, args.draft, expected_topic=args.expected_topic, exact_workstream=args.exact_workstream)
         as_json = getattr(args, "json", False)
         renderer = {"list": _emit_list, "show": _emit_show, "enter": _emit_enter,
                     "check": _emit_check, "backfill": _emit_backfill}.get(args.command, _emit)

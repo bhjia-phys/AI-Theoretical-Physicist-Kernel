@@ -172,10 +172,9 @@ def normalized(payload: dict) -> dict:
     return payload
 
 
-def skill_doc() -> str:
+def skill_doc(linked_guidance: str) -> str:
     """The bundled using-aitp Skill, whitespace-folded for stable matching."""
-    skill = (PLUGIN / "skills" / "using-aitp" / "SKILL.md").read_text(encoding="utf-8")
-    return re.sub(r"\s+", " ", skill)
+    return re.sub(r"\s+", " ", linked_guidance)
 
 
 def initialized(tmp_path: Path, name: str = "project") -> Path:
@@ -684,7 +683,7 @@ def test_scoped_golden(tmp_path: Path) -> None:
     assert json.loads(result.stdout) == report
 
 
-def test_unscoped_legacy_store_empty_scope(tmp_path: Path) -> None:
+def test_unscoped_legacy_store_empty_scope(tmp_path: Path, using_aitp_guidance: str) -> None:
     root = copy_store(tmp_path)
     for slug in ("crpa", "magnetic-symmetry"):
         scoped = check_workspace(root, workstream=slug)
@@ -705,7 +704,7 @@ def test_unscoped_legacy_store_empty_scope(tmp_path: Path) -> None:
     # clean/exit 0 may mean nothing is attributable, not health; health
     # requires records explicitly carrying the slug or a reviewed manual
     # backfill (the runtime never backfills).
-    skill = skill_doc()
+    skill = skill_doc(using_aitp_guidance)
     assert "check --workstream" in skill
     assert "aitp/check-report-0.2" in skill
     assert "by_code" in skill
@@ -716,7 +715,7 @@ def test_unscoped_legacy_store_empty_scope(tmp_path: Path) -> None:
     assert "never backfill" in skill
 
 
-def test_by_code_per_level_same_code(tmp_path: Path) -> None:
+def test_by_code_per_level_same_code(tmp_path: Path, using_aitp_guidance: str) -> None:
     root = initialized(tmp_path)
     fill_goal(root)
     make_entry(root, "1", kind="result", limitations=["L"],
@@ -739,7 +738,7 @@ def test_by_code_per_level_same_code(tmp_path: Path) -> None:
     # document the frozen ref shape (target + at + locator, docs/design.md
     # §Evidence pins) and the mutable-pin discipline for evidence that may
     # change — the exact shape this test's refs exercise.
-    skill = skill_doc()
+    skill = skill_doc(using_aitp_guidance)
     assert "target:" in skill
     assert "at:" in skill
     assert "evidence that may change" in skill

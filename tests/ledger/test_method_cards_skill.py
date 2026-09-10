@@ -651,47 +651,22 @@ def test_skill_text_gates_never_list_and_no_wrong_claims() -> None:
         assert "visible as superseded in list/show" not in doc
 
 
-def test_using_aitp_text_automatic_maintenance_contract() -> None:
-    using = re.sub(
-        r"\s+", " ",
-        (PLUGIN / "skills" / "using-aitp" / "SKILL.md").read_text(encoding="utf-8"),
-    )
-
-    # automatic current-state maintenance is agent judgment, never a runtime
-    # rule, and writes only through the normal prepare/save path
-    assert "Maintenance is automatic, but it is **judgment, not a runtime rule**" in using
-
-    # fail closed on exit 2: unverified enter/check state is never treated as clean
+def test_using_aitp_text_automatic_maintenance_contract(using_aitp_guidance: str) -> None:
+    # Distribution assertions follow only references linked by the entrypoint.
+    # Real-session acceptance, not these phrases, tests model behavior.
+    using = re.sub(r"\s+", " ", using_aitp_guidance)
     for phrase in (
-        "**fail closed** on it, never treat it as clean",
+        "Only if this session produced a durable delta and recorded state is genuinely behind",
+        "exit2 cannot run/misuse: fail closed on exit 2 and stop relying on that projection",
         "fail closed on exit 2",
         "do not proceed on unverified state",
-    ):
-        assert phrase in using, phrase
-
-    # no durable delta => zero-write
-    for phrase in (
-        "no durable delta ⇒ zero-write",
-        "**No-op is the default.**",
-        "write nothing: no closeout, no Note, no record — zero writes",
-    ):
-        assert phrase in using, phrase
-
-    # pre/post verification around every save
-    for phrase in (
-        "**Pre/post verification**",
-        "after any save, re-run both",
-        "The save is not verified until the post-run confirms it",
-    ):
-        assert phrase in using, phrase
-
-    # the closeout the agent appends carries full agent provenance
-    assert "--kind closeout --authority agent --created-by agent:<name>" in using
-    # working Notes carry created_by only, never authority
-    assert "Notes carry `created_by`, never `authority`" in using
-    # automatic supersession never touches human decision/result Entries
-    for phrase in (
-        "never supersede a human `decision` or `result` Entry",
+        "An unchanged query or re-read is zero-write",
+        "No delta means no maintenance write",
+        "After save, re-run check/enter",
+        "receipt alone is not enough",
+        "--kind closeout --authority agent --created-by agent:<name>",
+        "Notes use `created_by` and `basis_refs`, not `authority`",
+        "Never automatically supersede human records, decisions or results",
         "Never re-issue with `agent` authority a decision the ledger already records as `human`",
     ):
         assert phrase in using, phrase
@@ -1207,18 +1182,31 @@ def test_distilling_text_0_8_extended_never_list() -> None:
         assert phrase in distilling, phrase
 
 
-def test_using_aitp_text_0_8_observation_and_fallback() -> None:
+def test_using_aitp_text_0_8_observation_and_fallback(using_aitp_guidance: str) -> None:
     using = re.sub(
         r"\s+", " ",
-        (PLUGIN / "skills" / "using-aitp" / "SKILL.md").read_text(encoding="utf-8"),
+        using_aitp_guidance,
     )
 
     # session start: search observation markers after card retrieval
     for phrase in (
         'rg "^> method-observation:" .aitp/topic/entries/',
-        "load `../distilling-methods/SKILL.md` for a bounded candidate review",
+        "read distilling-methods for its bounded review",
     ):
         assert phrase in using, phrase
+
+    # Routing guidance only: discovery must not imply full review. These
+    # packaging assertions do not claim model conformance or runtime gating.
+    for phrase in (
+        "Discovery is not a distillation trigger",
+        "Ordinary read-only recall does not load distilling-methods merely because historical markers exist",
+        "task and touched evidence to judge relevance",
+        "explicit card/review request, relevant recurring execution evidence",
+        "new evidence for an existing card's trial/revision",
+        "not proof that a drafting or publication trigger holds",
+    ):
+        assert phrase in using, phrase
+    assert "When candidates exist," not in using
 
     # durable Entry creation: observation marker or post-card trial pin
     for phrase in (
@@ -1230,11 +1218,10 @@ def test_using_aitp_text_0_8_observation_and_fallback() -> None:
 
     # session end: review observations, cards, trials; best-effort fallback
     for phrase in (
-        "review new observation markers",
-        "best-effort fallback",
-        "no runtime hook fires after every save",
-        "no exactly-once claim",
-        "native host has explicitly provided a current-session AITP distillation coordinator",
+        "review this session's new observations/cards/ post-card trials",
+        "best-effort Skill behavior",
+        "not a runtime hook or exactly-once guarantee",
+        "Reuse fresh matching host scheduling",
     ):
         assert phrase in using, phrase
 

@@ -6,17 +6,15 @@ from pathlib import Path
 from aitp.core import init_workspace, parse_markdown, prepare_entry, prepare_note
 
 
-def test_using_aitp_skill_has_a_single_source() -> None:
+def test_using_aitp_skill_has_a_single_source(using_aitp_guidance: str) -> None:
     plugin = Path(__file__).parents[2] / "plugins" / "aitp-research-protocol"
-    skill = (plugin / "skills" / "using-aitp" / "SKILL.md").read_text(
-        encoding="utf-8"
-    )
+    skill = using_aitp_guidance
     metadata = (plugin / "skills" / "using-aitp" / "agents" / "openai.yaml")
     assert "name: using-aitp" in skill
     assert "aitp enter" in skill
     assert "aitp record prepare" in skill
     assert "aitp note prepare --mode working --title" in skill
-    assert "there is no\n`aitp search`" in skill
+    assert "No `aitp\nsearch` exists" in skill
     assert "$using-aitp" in metadata.read_text(encoding="utf-8")
     assert not files("aitp").joinpath("resources/skills").is_dir()
 

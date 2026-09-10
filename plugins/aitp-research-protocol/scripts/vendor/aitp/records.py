@@ -398,19 +398,38 @@ def validate_entry(
             raise AITPError("empty_section", f"required section is empty: {heading}")
 
 
-def save_entry(cwd: str | Path, draft: str | Path) -> dict[str, Any]:
+def _validate_save_preconditions(
+    expected_topic: Any, exact_workstream: Any, command: str = "record save"
+) -> None:
+    if (expected_topic is None) != (exact_workstream is None):
+        raise AITPError("invalid_save_precondition", f"{command} compare-and-save requires both expected_topic and exact_workstream")
+    for value, label in ((expected_topic, "expected_topic"), (exact_workstream, "exact_workstream")):
+        if value is not None and (not isinstance(value, str) or not WORKSTREAM_RE.fullmatch(value)):
+            raise AITPError("invalid_save_precondition", f"{label} must use lowercase letters, digits, and hyphens")
+
+
+def save_entry(
+    cwd: str | Path, draft: str | Path, *,
+    expected_topic: str | None = None, exact_workstream: str | None = None,
+) -> dict[str, Any]:
     root = resolve_root(cwd)
     load_store(root)
+    _validate_save_preconditions(expected_topic, exact_workstream)
     draft_path = (root / draft).resolve() if not Path(draft).is_absolute() else Path(draft).resolve()
     drafts_root = (root / ".aitp" / "local" / "drafts").resolve()
     try:
         draft_path.relative_to(drafts_root)
     except ValueError as exc:
         raise AITPError("invalid_draft", "Entry draft must be under .aitp/local/drafts") from exc
-    frontmatter, body, text = parse_markdown(draft_path)
-    validate_entry(root, frontmatter, body, validate_evidence=True)
-    final = root / ".aitp" / "topic" / "entries" / f"{frontmatter['id']}.md"
     with store_lock(root):
+        store = load_store(root)
+        if expected_topic is not None and store["topic_id"] != expected_topic:
+            raise AITPError("topic_precondition_failed", f"current Topic does not match expected Topic: expected {expected_topic}, found {store['topic_id']}")
+        frontmatter, body, text = parse_markdown(draft_path)
+        if exact_workstream is not None and frontmatter.get("workstreams") != [exact_workstream]:
+            raise AITPError("workstream_precondition_failed", f"Entry workstreams do not exactly match expected workstream: expected {[exact_workstream]!r}, found {frontmatter.get('workstreams')!r}")
+        validate_entry(root, frontmatter, body, validate_evidence=True, topic_id=store["topic_id"])
+        final = root / ".aitp" / "topic" / "entries" / f"{frontmatter['id']}.md"
         if final.exists():
             if final.read_bytes() == text.encode("utf-8"):
                 return {
